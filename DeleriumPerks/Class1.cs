@@ -74,6 +74,9 @@ namespace DeleriumPerks
 
             Create_ShutEye();
             Create_Photophobia();
+            Create_AngerIssues();
+            Create_Hallucinating();
+            Create_OneOfUs();
         }
 
         public static void Create_ShutEye()

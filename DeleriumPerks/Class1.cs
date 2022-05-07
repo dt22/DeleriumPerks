@@ -77,6 +77,8 @@ namespace DeleriumPerks
             Create_AngerIssues();
             Create_Hallucinating();
             Create_OneOfUs();
+            Create_FleshEater();
+            Create_Nails();
         }
 
         public static void Create_ShutEye()
@@ -270,7 +272,39 @@ namespace DeleriumPerks
             photophobia.ViewElementDef.LargeIcon = icon;
             photophobia.ViewElementDef.SmallIcon = icon;
         }
-
+        public static void Create_Nails()
+        {
+            string skillName = "Nails_AbilityDef";
+            PassiveModifierAbilityDef source = Repo.GetAllDefs<PassiveModifierAbilityDef>().FirstOrDefault(p => p.name.Equals("Cautious_AbilityDef"));
+            PassiveModifierAbilityDef nails = Helper.CreateDefFromClone(
+                source,
+                "b3185867-ca87-4e59-af6d-012267a7bd25",
+                skillName);
+            nails.CharacterProgressionData = Helper.CreateDefFromClone(
+                source.CharacterProgressionData,
+                "3e57b19b-11e1-42b9-81f4-c9cc9fffc42d",
+                skillName);
+            nails.ViewElementDef = Helper.CreateDefFromClone(
+                source.ViewElementDef,
+                "3f170800-b819-4237-80a3-c9b9daa9dab4",
+                skillName);
+            nails.StatModifications = new ItemStatModification[]
+              {
+                new ItemStatModification()
+                {
+                    TargetStat = StatModificationTarget.Accuracy,
+                    Modification = StatModificationType.Add,
+                    Value = -0.2f
+                },
+              };
+            nails.ItemTagStatModifications = new EquipmentItemTagStatModification[0];
+            nails.ViewElementDef.DisplayName1 = new LocalizedTextBind("NAILS", doNotLocalize);
+            nails.ViewElementDef.Description = new LocalizedTextBind("<b>You gain Slashing Strike, but -20% accuracyh</b>\n<i>Demonstrating signs of schizophrenia, this subject refuse to clip his nails and sharpens them to form monster " +
+                "claws, which naturally obstructs proper handling of firearm weapons </i>", doNotLocalize);
+            Sprite icon = Helper.CreateSpriteFromImageFile("UI_AbilitiesIcon_PersonalTrack_Siren_SlasherHands.png");
+            nails.ViewElementDef.LargeIcon = icon;
+            nails.ViewElementDef.SmallIcon = icon;
+        }
         public static void Create_OneOfUs()
         {
             string skillName = "OneOfUs_AbilityDef";

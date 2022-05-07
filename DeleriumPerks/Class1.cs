@@ -493,10 +493,10 @@ namespace DeleriumPerks
             solipsism.StatModifications = new ItemStatModification[0];
             solipsism.ItemTagStatModifications = new EquipmentItemTagStatModification[0];
 
-            solipsism.ViewElementDef.DisplayName1 = new LocalizedTextBind("ONE OF US", doNotLocalize);
-            solipsism.ViewElementDef.Description = new LocalizedTextBind("<b>Willpower reduced -2, Mist affects you as if you were a Pandoran</b>\n<i>Often the last to leave the mission, wandering ruined landscapes the subject claims the mist " +
-                "calls out to him</i>", doNotLocalize);
-            Sprite icon = Helper.CreateSpriteFromImageFile("UI_AbilitiesIcon_PersonalTrack_Sower_Of_Change_1-2.png");
+            solipsism.ViewElementDef.DisplayName1 = new LocalizedTextBind("SOLIPSISM", doNotLocalize);
+            solipsism.ViewElementDef.Description = new LocalizedTextBind("<b>You no longer suffer WP loss when allies die, but you lose 1 WP each time you take damage</b>\n<i>Subject exibits delusions of grandeur and self-obsession," +
+                " causing insubordination and disregard for human life</i>", doNotLocalize);
+            Sprite icon = Helper.CreateSpriteFromImageFile("UI_AbilitiesIcon_PersonalTrack_Privileged_1-2.png");
             solipsism.ViewElementDef.LargeIcon = icon;
             solipsism.ViewElementDef.SmallIcon = icon;
         }

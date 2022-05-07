@@ -192,9 +192,7 @@ namespace DeleriumPerks
                     Value = -2,
                 }
             };
-
-            fleshEaterSingleEffectDef2.StatModifications[0].Modification.Equals(StatModificationType.AddMax);
-
+            
             fleshEater.ViewElementDef.DisplayName1 = new LocalizedTextBind("FLESH EATER", doNotLocalize);
             fleshEater.ViewElementDef.Description = new LocalizedTextBind("<b>You gain Devour ability. Your allies lose 2 WP each time you kill an enemy.</b>\n<i>It is unclear whether this is some part of pagan ritual or pure insanity, but so far individual " +
                 "combat efficiency of the unit has grown by 46%</i>", doNotLocalize);

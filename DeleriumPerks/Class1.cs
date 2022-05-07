@@ -173,12 +173,16 @@ namespace DeleriumPerks
             StatsModifyEffectDef fleshEaterSingleEffectDef2 = Helper.CreateDefFromClone(
                 fleshEaterEffectDef2.SingleTargetEffect as StatsModifyEffectDef,
                 "ad0891cf-fe7a-443f-acb9-575c3cf23432",
-                "E_SingleTargetEffect [" + skillName + "]");         
+                "E_SingleTargetEffect [" + skillName + "]");
 
 
             //(fleshEater.StatusDef as OnActorDeathEffectStatusDef).EffectDef = fleshEaterEffectDef;
             //fleshEaterEffectDef.SingleTargetEffect = fleshEaterSingleTargetEffectDef;
             //fleshEaterSingleTargetEffectDef.StatModifications[0].StatName = "";
+            fleshEater.StatusDef = fleshEaterStatus;
+            fleshEaterStatus.EffectDef = fleshEaterEffectDef2;
+            fleshEaterEffectDef2.SingleTargetEffect = fleshEaterSingleEffectDef2;
+
             fleshEaterSingleEffectDef2.StatModifications = new List<StatModification>
             {
                 new StatModification()
@@ -189,9 +193,11 @@ namespace DeleriumPerks
                 }
             };
 
+            fleshEaterSingleEffectDef2.StatModifications[0].Modification.Equals(StatModificationType.AddMax);
+
             fleshEater.ViewElementDef.DisplayName1 = new LocalizedTextBind("FLESH EATER", doNotLocalize);
-            fleshEater.ViewElementDef.Description = new LocalizedTextBind("<b>Start each mission Disoriented for 2 turns</b>\n<i>So far observation show subject mostly harmless to himself or the surrounding, " +
-                "however it is not recommended to deploy on tactical missions</i>", doNotLocalize);
+            fleshEater.ViewElementDef.Description = new LocalizedTextBind("<b>You gain Devour ability. Your allies lose 2 WP each time you kill an enemy.</b>\n<i>It is unclear whether this is some part of pagan ritual or pure insanity, but so far individual " +
+                "combat efficiency of the unit has grown by 46%</i>", doNotLocalize);
             Sprite icon = Helper.CreateSpriteFromImageFile("UI_AbilitiesIcon_Mutog_Devour.png");
             fleshEater.ViewElementDef.LargeIcon = icon;
             fleshEater.ViewElementDef.SmallIcon = icon;

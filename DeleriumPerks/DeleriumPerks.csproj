@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5643100C-C5DC-4B0B-A2F2-A4D558E12618}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DeleriumPerks</RootNamespace>
+    <AssemblyName>DeleriumPerks</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="0Harmony, Version=1.2.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Lib.Harmony.1.2.0.1\lib\net472\0Harmony.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Phoenix Point\PhoenixPointWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Phoenix Point\PhoenixPointWin64_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Phoenix Point\PhoenixPointWin64_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Class1.cs" />
+    <Compile Include="Helper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_CharacterAbility_AmplifyPain01.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_CharacterAbility_AmplifyPain02.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_CharacterAbility_Gunslinger-2.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_CharacterAbility_Gunslinger-3.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_CharacterAbility_JetpackProficiency-2.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_CharacterAbility_KillZone-2a.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_CharacterAbility_LaunchMissile-2.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_CharacterAbility_TargetLocation-2.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_EquipmentAbility_OverwatchFocus-2.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_Fishman_SenseLocate-2.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_HunkerDown_1-2.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_KillNRun.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_AR_Targeting_2-2.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_ExpertHealer-2.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_FastLearner.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Gifted.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Guerilla.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_GymRat-2.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Heartless.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Hunter_2-3.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_NightOwl.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Pacifist.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Paranoid_1-1.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Phantom_Protocol_2-2.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Plumber.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Privileged_2-2.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Sower_Of_Change_1-1.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_SpecOp-1.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_SpecOp-2.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_SpecOp-3.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Stimpack-2.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Strategist.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Survivor_3-1.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_TacticalAnalyst.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Thief.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Vampire.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Volunteered_1-1.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_SneakerLegs_Stealth-2.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_SneakerLegs_Stealth.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_TentacularBody_MeleeAttackRetaliation-2.png" />
+    <Content Include="Assets\Textures\UI_Ability_GunAndRun.png" />
+    <Content Include="Assets\Textures\UI_StatusesIcons_CanBeRecruitedIntoPhoenix-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assets\Localization\" />
+    <Folder Include="Assets\Presets\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

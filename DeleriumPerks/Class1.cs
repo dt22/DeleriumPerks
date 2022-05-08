@@ -560,7 +560,7 @@ namespace DeleriumPerks
             }
         }
     }
-
+    /*
     [HarmonyPatch(typeof(TacticalActor), "OnAnotherActorDeath")]
     public static class TacticalActor_OnAnotherActorDeath_Patch
     {
@@ -608,4 +608,5 @@ namespace DeleriumPerks
             }
         }
     }
+    */
 }

@@ -516,19 +516,17 @@ namespace DeleriumPerks
                     {
                         foreach (TacticalActor actor in faction.TacticalActors)
                         {
-                            TacticalAbilityDef abilityDef = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("AngerIssues_AbilityDef"));
+                            PassiveModifierAbilityDef abilityDef = Repo.GetAllDefs<PassiveModifierAbilityDef>().FirstOrDefault(tad => tad.name.Equals("AngerIssues_AbilityDef"));
                             if (actor.GetAbilityWithDef<Ability>(abilityDef) != null)
                             {
                                 IDamageReceiver slot = actor.BodyState.GetSlot("1");
-                                (actor.Status.ApplyStatus(Repo.GetAllDefs<StatusDef>().FirstOrDefault(sd => sd.name.Equals("Frenzy_StatusDef")), actor, slot) as TacStatus).SetValue((float)100);
+                                (actor.Status.ApplyStatus(Repo.GetAllDefs<FrenzyStatusDef>().FirstOrDefault(sd => sd.name.Equals("Frenzy_StatusDef")), actor, slot) as TacStatus).SetValue((float)100);
                             }
 
-                            TacticalAbilityDef abilityDef1 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("Hallucinating_AbilityDef"));
+                            PassiveModifierAbilityDef abilityDef1 = Repo.GetAllDefs<PassiveModifierAbilityDef>().FirstOrDefault(tad => tad.name.Equals("Hallucinating_AbilityDef"));
                             if (actor.GetAbilityWithDef<Ability>(abilityDef1) != null)
-                            {
-                                IDamageReceiver slot = actor.BodyState.GetSlot("1");
-                                actor.Status.ApplyStatus(Repo.GetAllDefs<StatusDef>().FirstOrDefault(sd => sd.name.Equals("E_Status [NeuralDisruption_AbilityDef]")), null, null);
-                               
+                            {                               
+                                actor.Status.ApplyStatus(Repo.GetAllDefs<DamageMultiplierStatusDef>().FirstOrDefault(sd => sd.name.Equals("E_Status [NeuralDisruption_AbilityDef]")), null, null);                              
                             }
 
                             TacticalAbilityDef abilityDef2 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("FleshEater_AbilityDef"));

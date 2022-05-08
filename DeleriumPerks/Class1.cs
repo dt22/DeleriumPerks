@@ -519,13 +519,15 @@ namespace DeleriumPerks
                             TacticalAbilityDef abilityDef = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("AngerIssues_AbilityDef"));
                             if (actor.GetAbilityWithDef<Ability>(abilityDef) != null)
                             {
-                                actor.Status.ApplyStatus(Repo.GetAllDefs<StatusDef>().FirstOrDefault(sd => sd.name.Equals("Frenzy_StatusDef")));
+                                IDamageReceiver slot = actor.BodyState.GetSlot("1");
+                                (actor.Status.ApplyStatus(Repo.GetAllDefs<StatusDef>().FirstOrDefault(sd => sd.name.Equals("Frenzy_StatusDef")), actor, slot) as TacStatus).SetValue((float)100);
                             }
 
                             TacticalAbilityDef abilityDef1 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("Hallucinating_AbilityDef"));
                             if (actor.GetAbilityWithDef<Ability>(abilityDef1) != null)
                             {
-                                actor.Status.ApplyStatus(Repo.GetAllDefs<StatusDef>().FirstOrDefault(sd => sd.name.Equals("E_Status [NeuralDisruption_AbilityDef]")));
+                                IDamageReceiver slot = actor.BodyState.GetSlot("1");
+                                (actor.Status.ApplyStatus(Repo.GetAllDefs<StatusDef>().FirstOrDefault(sd => sd.name.Equals("E_Status [NeuralDisruption_AbilityDef]")), actor, slot) as TacStatus).SetValue((float)100);
                             }
 
                             TacticalAbilityDef abilityDef2 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("FleshEater_AbilityDef"));
@@ -537,7 +539,7 @@ namespace DeleriumPerks
                             TacticalAbilityDef abilityDef3 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("OneOfUs_AbilityDef"));
                             if (actor.GetAbilityWithDef<Ability>(abilityDef3) != null)
                             {
-                                actor.AddAbility(Repo.GetAllDefs<AbilityDef>().FirstOrDefault(sd => sd.name.Equals("OneOfUsPassive_AbilityDef")), actor);
+                                actor.AddAbility(Repo.GetAllDefs<AbilityDef>().FirstOrDefault(sd => sd.name.Equals("OneOfUsPassive_AbilityDef")), actor); 
                             }                           
                            
                             TacticalAbilityDef abilityDef5 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("Nails_AbilityDef"));

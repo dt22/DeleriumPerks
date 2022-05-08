@@ -527,13 +527,14 @@ namespace DeleriumPerks
                             if (actor.GetAbilityWithDef<Ability>(abilityDef1) != null)
                             {
                                 IDamageReceiver slot = actor.BodyState.GetSlot("1");
-                                (actor.Status.ApplyStatus(Repo.GetAllDefs<StatusDef>().FirstOrDefault(sd => sd.name.Equals("E_Status [NeuralDisruption_AbilityDef]")), actor, slot) as TacStatus).SetValue((float)100);
+                                actor.Status.ApplyStatus(Repo.GetAllDefs<StatusDef>().FirstOrDefault(sd => sd.name.Equals("E_Status [NeuralDisruption_AbilityDef]")), null, null);
+                               
                             }
 
                             TacticalAbilityDef abilityDef2 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("FleshEater_AbilityDef"));
                             if (actor.GetAbilityWithDef<Ability>(abilityDef2) != null)
                             {
-                                actor.AddAbility(Repo.GetAllDefs<AbilityDef>().FirstOrDefault(sd => sd.name.Equals("Mutog_PrimalInstinct_AbilityDef")), actor);
+                                actor.AddAbility(Repo.GetAllDefs<AbilityDef>().FirstOrDefault(sd => sd.name.Equals("Mutog_PrimalInstinct_AbilityDef")), false);
                             }
                            
                             TacticalAbilityDef abilityDef3 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("OneOfUs_AbilityDef"));

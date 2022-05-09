@@ -48,19 +48,22 @@ using System.IO;
 using PhoenixPoint.Tactical.Levels;
 using Base.Assets;
 
+
 namespace DeleriumPerks
 {
     public class MyMod
-    {
-        internal static readonly DefRepository Repo = GameUtl.GameComponent<DefRepository>();
-        internal static readonly SharedData Shared = GameUtl.GameComponent<SharedData>();
-        internal static string TexturesDirectory;
+    {      
+        internal static string LogPath;
         internal static string ModDirectory;
         internal static string ManagedDirectory;
+        internal static string TexturesDirectory;
+        internal static string LocalizationDirectory;
         internal static bool doNotLocalize = true;
+        internal static readonly DefRepository Repo = GameUtl.GameComponent<DefRepository>();
+        internal static readonly SharedData Shared = GameUtl.GameComponent<SharedData>();
         internal static readonly AssetsManager assetsManager = GameUtl.GameComponent<AssetsManager>();
         public static void HomeMod(Func<string, object, object > api = null)
-        {
+        {         
             HarmonyInstance.Create("DeleriumPerks").PatchAll();
             api?.Invoke("log verbose", "Mod Initialised.");
 
@@ -72,12 +75,12 @@ namespace DeleriumPerks
             ManagedDirectory = Path.Combine(ModDirectory, "Assets", "Presets");
             // Path to texture files
             TexturesDirectory = Path.Combine(ModDirectory, "Assets", "Textures");
-            ModDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            LocalizationDirectory = Path.Combine(ModDirectory, "Assets", "Localization");
 
 
 
             // Initialize Helper
-          
+
             Create_ShutEye();
             Create_Photophobia();
             Create_AngerIssues();

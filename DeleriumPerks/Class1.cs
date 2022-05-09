@@ -46,6 +46,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using System.IO;
 using PhoenixPoint.Tactical.Levels;
+using Base.Assets;
 
 namespace DeleriumPerks
 {
@@ -56,7 +57,8 @@ namespace DeleriumPerks
         internal static string TexturesDirectory;
         internal static string ModDirectory;
         internal static string ManagedDirectory;
-        internal static bool doNotLocalize = false;
+        internal static bool doNotLocalize = true;
+        internal static readonly AssetsManager assetsManager = GameUtl.GameComponent<AssetsManager>();
         public static void HomeMod(Func<string, object, object > api = null)
         {
             HarmonyInstance.Create("DeleriumPerks").PatchAll();
@@ -70,7 +72,12 @@ namespace DeleriumPerks
             ManagedDirectory = Path.Combine(ModDirectory, "Assets", "Presets");
             // Path to texture files
             TexturesDirectory = Path.Combine(ModDirectory, "Assets", "Textures");
+            ModDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
+
+
+            // Initialize Helper
+          
             Create_ShutEye();
             Create_Photophobia();
             Create_AngerIssues();
@@ -116,9 +123,9 @@ namespace DeleriumPerks
                 },
               };
             shutEye.ItemTagStatModifications = new EquipmentItemTagStatModification[0];
-            shutEye.ViewElementDef.DisplayName1 = new LocalizedTextBind("SHUT EYE", doNotLocalize);
+            shutEye.ViewElementDef.DisplayName1 = new LocalizedTextBind("SHUT EYE", true);
             shutEye.ViewElementDef.Description = new LocalizedTextBind("<b>-10 Perception, +10 Hearing Range</b>\n<i>Exibiting rare form of paranoia and claustrophobia, the subject often found with his eyes closed, " +
-            "claiming to see with his inner eye </i>", doNotLocalize);
+            "claiming to see with his inner eye </i>", true);
             Sprite icon = Helper.CreateSpriteFromImageFile("UI_AbilitiesIcon_PersonalTrack_Volunteered_1-2.png");
             shutEye.ViewElementDef.LargeIcon = icon;
             shutEye.ViewElementDef.SmallIcon = icon;
@@ -141,9 +148,9 @@ namespace DeleriumPerks
                 skillName);
             hallucinating.StatModifications = new ItemStatModification[0];
             hallucinating.ItemTagStatModifications = new EquipmentItemTagStatModification[0];
-            hallucinating.ViewElementDef.DisplayName1 = new LocalizedTextBind("HALLUCINATING", doNotLocalize);
+            hallucinating.ViewElementDef.DisplayName1 = new LocalizedTextBind("HALLUCINATING", true);
             hallucinating.ViewElementDef.Description = new LocalizedTextBind("<b>Start each mission Disoriented for 2 turns</b>\n<i>So far observation show subject mostly harmless to himself or the surrounding, " +
-                "however it is not recommended to deploy on tactical missions</i>", doNotLocalize);
+                "however it is not recommended to deploy on tactical missions</i>", true);
             Sprite icon = Helper.CreateSpriteFromImageFile("UI_AbilitiesIcon_PersonalTrack_Paranoid_2-1.png");
             hallucinating.ViewElementDef.LargeIcon = icon;
             hallucinating.ViewElementDef.SmallIcon = icon;
@@ -198,10 +205,10 @@ namespace DeleriumPerks
                 }
             };
             
-            fleshEater.ViewElementDef.DisplayName1 = new LocalizedTextBind("FLESH EATER", doNotLocalize);
+            fleshEater.ViewElementDef.DisplayName1 = new LocalizedTextBind("FLESH EATER", true);
             fleshEater.ViewElementDef.Description = new LocalizedTextBind("<b>You gain Devour ability. Your allies lose 2 WP each time you kill an enemy.</b>\n<i>It is unclear whether this is some part of pagan ritual or pure insanity, but so far individual " +
-                "combat efficiency of the unit has grown by 46%</i>", doNotLocalize);
-            Sprite icon = Helper.CreateSpriteFromImageFile("UI_AbilitiesIcon_Mutog_Devour.png");
+                "combat efficiency of the unit has grown by 46%</i>", true);
+            Sprite icon = Repo.GetAllDefs<TacticalAbilityViewElementDef>().FirstOrDefault(tav => tav.name.Equals("E_ViewElement [Mutog_Devour_AbilityDef]")).LargeIcon;
             fleshEater.ViewElementDef.LargeIcon = icon;
             fleshEater.ViewElementDef.SmallIcon = icon;
         }
@@ -231,9 +238,9 @@ namespace DeleriumPerks
                 },                
               };
             angerIssues.ItemTagStatModifications = new EquipmentItemTagStatModification[0];
-            angerIssues.ViewElementDef.DisplayName1 = new LocalizedTextBind("ANGER ISSUES", doNotLocalize);
-            angerIssues.ViewElementDef.Description = new LocalizedTextBind("<b>Start each mission Frenzied for 2 turns, -25% Stealth</b>\n<i>Subject shows signs of violent outbursts, it is recommended to keep him isolated unless deployed for combat</i>", doNotLocalize);
-            Sprite icon = Helper.CreateSpriteFromImageFile("UI_AbilitiesIcon_PersonalTrack_Warcry.png");
+            angerIssues.ViewElementDef.DisplayName1 = new LocalizedTextBind("ANGER ISSUES", true);
+            angerIssues.ViewElementDef.Description = new LocalizedTextBind("<b>Start each mission Frenzied for 2 turns, -25% Stealth</b>\n<i>Subject shows signs of violent outbursts, it is recommended to keep him isolated unless deployed for combat</i>", true);
+            Sprite icon = Repo.GetAllDefs<TacticalAbilityViewElementDef>().FirstOrDefault(tav => tav.name.Equals("E_View [WarCry_AbilityDef]")).LargeIcon;
             angerIssues.ViewElementDef.LargeIcon = icon;
             angerIssues.ViewElementDef.SmallIcon = icon;
         }
@@ -269,8 +276,8 @@ namespace DeleriumPerks
                 },
               };
             photophobia.ItemTagStatModifications = new EquipmentItemTagStatModification[0];
-            photophobia.ViewElementDef.DisplayName1 = new LocalizedTextBind("PHOTOPHOBIA", doNotLocalize);
-            photophobia.ViewElementDef.Description = new LocalizedTextBind("<b>Speed reduced -2, Stealth Increased +25%</b>\n<i>Acting erratically the subject seem to always reconsider his next step, trying to stay outside of lit areas</i>", doNotLocalize);
+            photophobia.ViewElementDef.DisplayName1 = new LocalizedTextBind("PHOTOPHOBIA", true);
+            photophobia.ViewElementDef.Description = new LocalizedTextBind("<b>Speed reduced -2, Stealth Increased +25%</b>\n<i>Acting erratically the subject seem to always reconsider his next step, trying to stay outside of lit areas</i>", true);
             Sprite icon = Helper.CreateSpriteFromImageFile("UI_AbilitiesIcon_PersonalTrack_NightOwl.png");
             photophobia.ViewElementDef.LargeIcon = icon;
             photophobia.ViewElementDef.SmallIcon = icon;
@@ -301,10 +308,10 @@ namespace DeleriumPerks
                 },
               };
             nails.ItemTagStatModifications = new EquipmentItemTagStatModification[0];
-            nails.ViewElementDef.DisplayName1 = new LocalizedTextBind("NAILS", doNotLocalize);
+            nails.ViewElementDef.DisplayName1 = new LocalizedTextBind("NAILS", true);
             nails.ViewElementDef.Description = new LocalizedTextBind("<b>You gain Slashing Strike, but -20% accuracyh</b>\n<i>Demonstrating signs of schizophrenia, this subject refuse to clip his nails and sharpens them to form monster " +
-                "claws, which naturally obstructs proper handling of firearm weapons </i>", doNotLocalize);
-            Sprite icon = Helper.CreateSpriteFromImageFile("UI_AbilitiesIcon_PersonalTrack_Siren_SlasherHands.png");
+                "claws, which naturally obstructs proper handling of firearm weapons </i>", true);
+            Sprite icon = Repo.GetAllDefs<TacticalAbilityViewElementDef>().FirstOrDefault(tav => tav.name.Equals("E_ViewElement [Mutoid_SlashingStrike_AbilityDef]")).SmallIcon;
             nails.ViewElementDef.LargeIcon = icon;
             nails.ViewElementDef.SmallIcon = icon;
         }
@@ -329,9 +336,9 @@ namespace DeleriumPerks
             oneOfUs.DamageTypeDef = Repo.GetAllDefs<DamageTypeBaseEffectDef>().FirstOrDefault(dtb => dtb.name.Equals("Mist_SpawnVoxelDamageTypeEffectDef"));
             oneOfUs.Multiplier = 0;
 
-            oneOfUs.ViewElementDef.DisplayName1 = new LocalizedTextBind("ONE OF US", doNotLocalize);
+            oneOfUs.ViewElementDef.DisplayName1 = new LocalizedTextBind("ONE OF US", true);
             oneOfUs.ViewElementDef.Description = new LocalizedTextBind("<b>Willpower reduced -2, Mist affects you as if you were a Pandoran</b>\n<i>Often the last to leave the mission, wandering ruined landscapes the subject claims the mist " +
-                "calls out to him</i>", doNotLocalize);
+                "calls out to him</i>", true);
             Sprite icon = Helper.CreateSpriteFromImageFile("UI_AbilitiesIcon_PersonalTrack_Sower_Of_Change_1-2.png");
             oneOfUs.ViewElementDef.LargeIcon = icon;
             oneOfUs.ViewElementDef.SmallIcon = icon;
@@ -370,9 +377,9 @@ namespace DeleriumPerks
               };
 
             ofuPassive.ItemTagStatModifications = new EquipmentItemTagStatModification[0];
-            ofuPassive.ViewElementDef.DisplayName1 = new LocalizedTextBind("ONE OF US", doNotLocalize);
+            ofuPassive.ViewElementDef.DisplayName1 = new LocalizedTextBind("ONE OF US", true);
             ofuPassive.ViewElementDef.Description = new LocalizedTextBind("<b>Willpower reduced -2, Mist affects you as if you were a Pandoran</b>\n<i>Often the last to leave the mission, wandering ruined landscapes the subject claims the mist " +
-                "calls out to him</i>", doNotLocalize);
+                "calls out to him</i>", true);
             Sprite icon = Helper.CreateSpriteFromImageFile("UI_AbilitiesIcon_PersonalTrack_Sower_Of_Change_1-2.png");
             ofuPassive.ViewElementDef.LargeIcon = icon;
             ofuPassive.ViewElementDef.SmallIcon = icon;
@@ -399,25 +406,19 @@ namespace DeleriumPerks
                 {
                     TargetStat = StatModificationTarget.Endurance,
                     Modification = StatModificationType.Add,
-                    Value = -4
+                    Value = -4,
                 },
                 new ItemStatModification()
                 {
                     TargetStat = StatModificationTarget.Endurance,
                     Modification = StatModificationType.AddMax,
-                    Value = -4
-                },
-                new ItemStatModification()
-                {
-                    TargetStat = StatModificationTarget.Armour,
-                    Modification = StatModificationType.AddRestrictedToBounds,
-                    Value = 10
+                    Value = -4,
                 },
               };
             immortality.ItemTagStatModifications = new EquipmentItemTagStatModification[0];
-            immortality.ViewElementDef.DisplayName1 = new LocalizedTextBind("IMMORTALITY", doNotLocalize);
+            immortality.ViewElementDef.DisplayName1 = new LocalizedTextBind("IMMORTALITY", true);
             immortality.ViewElementDef.Description = new LocalizedTextBind("<b>Strength reduced -4, Gain 10 natural Armour</b>\n<i>Self-mutilation is not uncommon to develop throughout Delirium affected subjects," +
-                " this one in particular believes he has become Immortal</i>", doNotLocalize);
+                " this one in particular believes he has become Immortal</i>", true);
             Sprite icon = Helper.CreateSpriteFromImageFile("UI_AbilitiesIcon_PersonalTrack_Vampire.png");
             immortality.ViewElementDef.LargeIcon = icon;
             immortality.ViewElementDef.SmallIcon = icon;
@@ -466,9 +467,10 @@ namespace DeleriumPerks
                 },
               };
             feral.ItemTagStatModifications = new EquipmentItemTagStatModification[0];
-            feral.ViewElementDef.DisplayName1 = new LocalizedTextBind("FERAL", doNotLocalize);
-            feral.ViewElementDef.Description = new LocalizedTextBind("<b>Strength Increased +2, Gains Leap  (same as Mutog), Willpower Reduced -4</b>\n<i>Suffering personality disorder, the subject degrade to animalistic behaviour and state of mind</i>", doNotLocalize);
-            Sprite icon = Helper.CreateSpriteFromImageFile("UI_AbilitiesIcon_Mutog_Enrage.png");
+            feral.ViewElementDef.DisplayName1 = new LocalizedTextBind("FERAL", true);
+            feral.ViewElementDef.Description = new LocalizedTextBind("<b>Strength Increased +2, Gains Leap  (same as Mutog), Willpower Reduced -4</b>\n<i>Suffering personality disorder," +
+                " the subject degrade to animalistic behaviour and state of mind</i>", true);
+            Sprite icon = Repo.GetAllDefs<TacticalAbilityViewElementDef>().FirstOrDefault(tav => tav.name.Equals("E_ViewElement [Mutog_PrimalInstinct_AbilityDef]")).LargeIcon;
             feral.ViewElementDef.LargeIcon = icon;
             feral.ViewElementDef.SmallIcon = icon;
         }
@@ -493,73 +495,84 @@ namespace DeleriumPerks
             solipsism.StatModifications = new ItemStatModification[0];
             solipsism.ItemTagStatModifications = new EquipmentItemTagStatModification[0];
 
-            solipsism.ViewElementDef.DisplayName1 = new LocalizedTextBind("SOLIPSISM", doNotLocalize);
+            solipsism.ViewElementDef.DisplayName1 = new LocalizedTextBind("SOLIPSISM", true);
             solipsism.ViewElementDef.Description = new LocalizedTextBind("<b>You no longer suffer WP loss when allies die, but you lose 1 WP each time you take damage</b>\n<i>Subject exibits delusions of grandeur and self-obsession," +
-                " causing insubordination and disregard for human life</i>", doNotLocalize);
+                " causing insubordination and disregard for human life</i>", true);
             Sprite icon = Helper.CreateSpriteFromImageFile("UI_AbilitiesIcon_PersonalTrack_Privileged_1-2.png");
             solipsism.ViewElementDef.LargeIcon = icon;
             solipsism.ViewElementDef.SmallIcon = icon;
         }
     }
 
-    [HarmonyPatch(typeof(TacticalLevelController), "OnLevelStart")]
+    [HarmonyPatch(typeof(PhoenixStatisticsManager), "OnTacticalLevelStart")]
     public static class TacticalLevelController_OnLevelStart_Patch
     {
-        public static void Postfix(TacticalLevelController __instance)
+        public static void Postfix(TacticalLevelController level)
         {
             DefRepository Repo = GameUtl.GameComponent<DefRepository>();
-            try
-            {
-                foreach (TacticalFaction faction in __instance.Factions)
-                {
-                    if (faction.IsViewerFaction)
+                    try
                     {
-                        foreach (TacticalActor actor in faction.TacticalActors)
+                        foreach (TacticalFaction faction in level.Factions)
                         {
-                            PassiveModifierAbilityDef abilityDef = Repo.GetAllDefs<PassiveModifierAbilityDef>().FirstOrDefault(tad => tad.name.Equals("AngerIssues_AbilityDef"));
-                            if (actor.GetAbilityWithDef<Ability>(abilityDef) != null)
+                            if (faction.IsViewerFaction)
                             {
-                                IDamageReceiver slot = actor.BodyState.GetSlot("1");
-                                (actor.Status.ApplyStatus(Repo.GetAllDefs<FrenzyStatusDef>().FirstOrDefault(sd => sd.name.Equals("Frenzy_StatusDef")), actor, slot) as TacStatus).SetValue((float)100);
-                            }
+                                foreach (TacticalActor actor in faction.TacticalActors)
+                                {
+                                    
+                                    TacticalAbilityDef abilityDef = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("AngerIssues_AbilityDef"));
+                                    if (actor.GetAbilityWithDef<Ability>(abilityDef) != null)
+                                    {                                      
+                                        actor.Status.ApplyStatus(Repo.GetAllDefs<StatusDef>().FirstOrDefault(sd => sd.name.Equals("Frenzy_StatusDef")));
+                                    }
 
-                            PassiveModifierAbilityDef abilityDef1 = Repo.GetAllDefs<PassiveModifierAbilityDef>().FirstOrDefault(tad => tad.name.Equals("Hallucinating_AbilityDef"));
-                            if (actor.GetAbilityWithDef<Ability>(abilityDef1) != null)
-                            {                               
-                                actor.Status.ApplyStatus(Repo.GetAllDefs<DamageMultiplierStatusDef>().FirstOrDefault(sd => sd.name.Equals("E_Status [NeuralDisruption_AbilityDef]")), null, null);                              
-                            }
+                                    TacticalAbilityDef abilityDef1 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("Hallucinating_AbilityDef"));
+                                    if (actor.GetAbilityWithDef<Ability>(abilityDef1) != null)
+                                    {                               
+                                        actor.Status.ApplyStatus(Repo.GetAllDefs<StatusDef>().FirstOrDefault(sd => sd.name.Equals("ActorSilenced_StatusDef")));
+                                    }
+                                    
+                                    TacticalAbilityDef abilityDef2 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("FleshEater_AbilityDef"));
+                                    if (actor.GetAbilityWithDef<Ability>(abilityDef2) != null)
+                                    {
+                                        actor.AddAbility(Repo.GetAllDefs<AbilityDef>().FirstOrDefault(sd => sd.name.Equals("Mutog_Devour_AbilityDef")), actor);
+                                    }
 
-                            TacticalAbilityDef abilityDef2 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("FleshEater_AbilityDef"));
-                            if (actor.GetAbilityWithDef<Ability>(abilityDef2) != null)
-                            {
-                                actor.AddAbility(Repo.GetAllDefs<AbilityDef>().FirstOrDefault(sd => sd.name.Equals("Mutog_PrimalInstinct_AbilityDef")), false);
-                            }
-                           
-                            TacticalAbilityDef abilityDef3 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("OneOfUs_AbilityDef"));
-                            if (actor.GetAbilityWithDef<Ability>(abilityDef3) != null)
-                            {
-                                actor.AddAbility(Repo.GetAllDefs<AbilityDef>().FirstOrDefault(sd => sd.name.Equals("OneOfUsPassive_AbilityDef")), actor); 
-                            }                           
-                           
-                            TacticalAbilityDef abilityDef5 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("Nails_AbilityDef"));
-                            if (actor.GetAbilityWithDef<Ability>(abilityDef5) != null)
-                            {
-                                actor.AddAbility(Repo.GetAllDefs<AbilityDef>().FirstOrDefault(sd => sd.name.Equals("Mutoid_Adapt_RightArm_Slasher_AbilityDef")), actor);
-                            }
-                            TacticalAbilityDef abilityDef6 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("Nails_AbilityDef"));
-                            if (actor.GetAbilityWithDef<Ability>(abilityDef6) != null)
-                            {
-                                actor.AddAbility(Repo.GetAllDefs<AbilityDef>().FirstOrDefault(sd => sd.name.Equals("Mutog_Leap_AbilityDef")), actor);
+                                    TacticalAbilityDef abilityDef3 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("OneOfUs_AbilityDef"));
+                                    if (actor.GetAbilityWithDef<Ability>(abilityDef3) != null)
+                                    {
+                                        actor.AddAbility(Repo.GetAllDefs<AbilityDef>().FirstOrDefault(sd => sd.name.Equals("OneOfUsPassive_AbilityDef")), actor);
+                                    }
+
+                                    TacticalAbilityDef abilityDef5 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("Nails_AbilityDef"));
+                                    if (actor.GetAbilityWithDef<Ability>(abilityDef5) != null)
+                                    {
+                                        actor.AddAbility(Repo.GetAllDefs<AbilityDef>().FirstOrDefault(sd => sd.name.Equals("Mutoid_Adapt_RightArm_Slasher_AbilityDef")), actor);
+                                    }
+
+                                    TacticalAbilityDef abilityDef6 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("Nails_AbilityDef"));
+                                    if (actor.GetAbilityWithDef<Ability>(abilityDef6) != null)
+                                    {
+                                        actor.AddAbility(Repo.GetAllDefs<AbilityDef>().FirstOrDefault(sd => sd.name.Equals("Mutog_CanLeap_AbilityDef")), actor);
+                                        actor.AddAbility(Repo.GetAllDefs<AbilityDef>().FirstOrDefault(sd => sd.name.Equals("Mutog_Leap_AbilityDef")), actor);
+                                    }
+                                    /*
+                                    TacticalAbilityDef abilityDef7 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("Immortality_AbilityDef"));
+                                    if (actor.GetAbilityWithDef<Ability>(abilityDef7) != null)
+                                    {
+                                        actor.GetArmor().Add(50);
+                                        actor.CharacterStats.Armour.Add(100);
+                                        //actor.UpdateStats();
+                                    }
+                                    */
+                                }
                             }
                         }
                     }
-                }
-            }
-            catch (Exception e)
-            {
-            }
-        }
-    }
+                    catch (Exception e)
+                    {
+                    }
+                }           
+            }                    
     /*
     [HarmonyPatch(typeof(TacticalActor), "OnAnotherActorDeath")]
     public static class TacticalActor_OnAnotherActorDeath_Patch

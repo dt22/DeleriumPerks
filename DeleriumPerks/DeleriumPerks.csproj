@@ -35,6 +35,10 @@
       <HintPath>..\packages\Lib.Harmony.1.2.0.1\lib\net472\0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="AK.Wwise.Unity.API.WwiseTypes">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Phoenix Point\PhoenixPointWin64_Data\Managed\AK.Wwise.Unity.API.WwiseTypes.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Phoenix Point\PhoenixPointWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
@@ -47,12 +51,32 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="Unity.Addressables">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Phoenix Point\PhoenixPointWin64_Data\Managed\Unity.Addressables.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.ResourceManager">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Phoenix Point\PhoenixPointWin64_Data\Managed\Unity.ResourceManager.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Phoenix Point\PhoenixPointWin64_Data\Managed\UnityEngine.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Phoenix Point\PhoenixPointWin64_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.ImageConversionModule">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Phoenix Point\PhoenixPointWin64_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.JSONSerializeModule">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Phoenix Point\PhoenixPointWin64_Data\Managed\UnityEngine.JSONSerializeModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Phoenix Point\PhoenixPointWin64_Data\Managed\UnityEngine.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -62,6 +86,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Assets\Presets\AbilityDefToNameDict.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Assets\Presets\NotLocalizedTextMap.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -98,10 +128,14 @@
     <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Hunter_2-1.png" />
     <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Hunter_2-2.png" />
     <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Hunter_2-3.png" />
-    <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_NightOwl.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_NightOwl.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Pacifist.png" />
     <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Paranoid_1-1.png" />
-    <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Paranoid_2-1.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Paranoid_2-1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Paranoid_3-1.png" />
     <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Paranoid_3-2.png" />
     <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Phantom_Protocol_1-1.png" />
@@ -113,7 +147,9 @@
     <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Privileged_2-1.png" />
     <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Privileged_2-2.png" />
     <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Sower_Of_Change_1-1.png" />
-    <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Sower_Of_Change_1-2.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Sower_Of_Change_1-2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Sower_Of_Change_2-1.png" />
     <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Sower_Of_Change_3-1.png" />
     <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Sower_Of_Change_4-1.png" />
@@ -127,9 +163,13 @@
     <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Survivor_3-1.png" />
     <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_TacticalAnalyst.png" />
     <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Thief.png" />
-    <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Vampire.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Vampire.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Volunteered_1-1.png" />
-    <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Volunteered_1-2.png" />
+    <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Volunteered_1-2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Volunteered_2-1.png" />
     <Content Include="Assets\Textures\UI_AbilitiesIcon_PersonalTrack_Volunteered_2-2.png" />
     <Content Include="Assets\Textures\UI_AbilitiesIcon_SneakerLegs_Stealth-2.png" />
@@ -140,7 +180,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\Localization\" />
-    <Folder Include="Assets\Presets\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

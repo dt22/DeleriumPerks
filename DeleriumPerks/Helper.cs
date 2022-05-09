@@ -45,6 +45,8 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using System.IO;
+using DeleriumPerks;
+using Base.Assets;
 
 namespace DeleriumPerks
 {
@@ -55,6 +57,7 @@ namespace DeleriumPerks
         internal static string ModDirectory;
         internal static string ManagedDirectory;
         internal static string TexturesDirectory;
+
         public static T CreateDefFromClone<T>(T source, string guid, string name) where T : BaseDef
         {
             DefRepository Repo = GameUtl.GameComponent<DefRepository>();

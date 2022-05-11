@@ -47,7 +47,8 @@ using UnityEngine;
 using System.IO;
 using PhoenixPoint.Tactical.Levels;
 using Base.Assets;
-
+using PhoenixPoint.Geoscape.View.ViewControllers.BaseRecruits;
+using PhoenixPoint.Geoscape.View.DataObjects;
 
 namespace DeleriumPerks
 {
@@ -557,6 +558,7 @@ namespace DeleriumPerks
                                     {
                                         actor.AddAbility(Repo.GetAllDefs<AbilityDef>().FirstOrDefault(sd => sd.name.Equals("Mutog_CanLeap_AbilityDef")), actor);
                                         actor.AddAbility(Repo.GetAllDefs<AbilityDef>().FirstOrDefault(sd => sd.name.Equals("Mutog_Leap_AbilityDef")), actor);
+                                
                                     }
                                     /*
                                     TacticalAbilityDef abilityDef7 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("Immortality_AbilityDef"));
@@ -575,7 +577,61 @@ namespace DeleriumPerks
                     {
                     }
                 }           
-            }                    
+            }
+
+    [HarmonyPatch(typeof(RecruitsListElementController), "SetRecruitElement")]
+    public static class RecruitsListElementController_SetRecruitElement_Patch
+    {
+        public static bool Prefix(RecruitsListElementController __instance, RecruitsListEntryData entryData, List<RowIconTextController> ____abilityIcons)
+        {
+            try
+            {
+                if (____abilityIcons == null)
+                {
+                    ____abilityIcons = new List<RowIconTextController>();
+                    if (__instance.PersonalTrackRoot.transform.childCount < entryData.PersonalTrackAbilities.Count())
+                    {
+                        RectTransform parent = __instance.PersonalTrackRoot.GetComponent<RectTransform>();
+                        RowIconTextController source = parent.GetComponentInChildren<RowIconTextController>();
+                        parent.DetachChildren();
+                        source.Icon.GetComponent<RectTransform>().sizeDelta = new Vector2(95f, 95f);
+                        for (int i = 0; i < entryData.PersonalTrackAbilities.Count(); i++)
+                        {
+                            RowIconTextController entry = UnityEngine.Object.Instantiate(source, parent, true);
+                        }
+                    }
+                    UIUtil.GetComponentsFromContainer(__instance.PersonalTrackRoot.transform, ____abilityIcons);
+                }
+                __instance.RecruitData = entryData;
+                __instance.RecruitName.SetSoldierData(entryData.Recruit);
+                BC_SetAbilityIcons(entryData.PersonalTrackAbilities.ToList(), ____abilityIcons);
+                if (entryData.SuppliesCost != null && __instance.CostText != null && __instance.CostColorController != null)
+                {
+                    __instance.CostText.text = entryData.SuppliesCost.ByResourceType(ResourceType.Supplies).RoundedValue.ToString();
+                    __instance.CostColorController.SetWarningActive(!entryData.IsAffordable, true);
+                }
+                __instance.NavHolder.RefreshNavigation();
+                return false;
+            }
+            catch (Exception e)
+            {
+                return true;
+            }
+        }
+
+        private static void BC_SetAbilityIcons(List<TacticalAbilityViewElementDef> abilities, List<RowIconTextController> abilityIcons)
+        {
+            foreach (RowIconTextController rowIconTextController in abilityIcons)
+            {
+                rowIconTextController.gameObject.SetActive(false);
+            }
+            for (int i = 0; i < abilities.Count; i++)
+            {
+                abilityIcons[i].gameObject.SetActive(true);
+                abilityIcons[i].SetController(abilities[i].LargeIcon, abilities[i].DisplayName1, abilities[i].Description);
+            }
+        }
+    }
     /*
     [HarmonyPatch(typeof(TacticalActor), "OnAnotherActorDeath")]
     public static class TacticalActor_OnAnotherActorDeath_Patch

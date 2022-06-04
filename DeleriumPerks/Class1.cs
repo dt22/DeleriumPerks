@@ -90,7 +90,9 @@ namespace DeleriumPerks
             Create_OneOfUsPassive();
             Create_FleshEater();
             Create_Nails();
+            Create_NailsPassive();
             Create_Immortality();
+            Create_ImmortalityPassive();
             Create_Feral();
             Create_Solipsism();
         }
@@ -286,23 +288,23 @@ namespace DeleriumPerks
             photophobia.ViewElementDef.LargeIcon = icon;
             photophobia.ViewElementDef.SmallIcon = icon;
         }
-        public static void Create_Nails()
+        public static void Create_NailsPassive()
         {
-            string skillName = "Nails_AbilityDef";
+            string skillName = "NailsPassive_AbilityDef";
             PassiveModifierAbilityDef source = Repo.GetAllDefs<PassiveModifierAbilityDef>().FirstOrDefault(p => p.name.Equals("Cautious_AbilityDef"));
-            PassiveModifierAbilityDef nails = Helper.CreateDefFromClone(
+            PassiveModifierAbilityDef nailsPassive = Helper.CreateDefFromClone(
                 source,
                 "b3185867-ca87-4e59-af6d-012267a7bd25",
                 skillName);
-            nails.CharacterProgressionData = Helper.CreateDefFromClone(
+            nailsPassive.CharacterProgressionData = Helper.CreateDefFromClone(
                 source.CharacterProgressionData,
                 "3e57b19b-11e1-42b9-81f4-c9cc9fffc42d",
                 skillName);
-            nails.ViewElementDef = Helper.CreateDefFromClone(
+            nailsPassive.ViewElementDef = Helper.CreateDefFromClone(
                 source.ViewElementDef,
                 "3f170800-b819-4237-80a3-c9b9daa9dab4",
                 skillName);
-            nails.StatModifications = new ItemStatModification[]
+            nailsPassive.StatModifications = new ItemStatModification[]
               {
                 new ItemStatModification()
                 {
@@ -311,14 +313,38 @@ namespace DeleriumPerks
                     Value = -0.2f
                 },
               };
-            nails.ItemTagStatModifications = new EquipmentItemTagStatModification[0];
+            nailsPassive.ItemTagStatModifications = new EquipmentItemTagStatModification[0];
+            nailsPassive.ViewElementDef.DisplayName1 = new LocalizedTextBind("NAILS", true);
+            nailsPassive.ViewElementDef.Description = new LocalizedTextBind("<b>You gain Slashing Strike, but -20% accuracyh</b>\n<i>Demonstrating signs of schizophrenia, this subject refuse to clip his nails and sharpens them to form monster " +
+                "claws, which naturally obstructs proper handling of firearm weapons </i>", true);
+            Sprite icon = Repo.GetAllDefs<TacticalAbilityViewElementDef>().FirstOrDefault(tav => tav.name.Equals("E_ViewElement [Mutoid_SlashingStrike_AbilityDef]")).SmallIcon;
+            nailsPassive.ViewElementDef.LargeIcon = icon;
+            nailsPassive.ViewElementDef.SmallIcon = icon;
+        }
+        public static void Create_Nails()
+        {
+            string skillName = "Nails_AbilityDef";
+            ApplyStatusAbilityDef source = Repo.GetAllDefs<ApplyStatusAbilityDef>().FirstOrDefault(p => p.name.Equals("Mutoid_Adapt_RightArm_Slasher_AbilityDef"));
+            ApplyStatusAbilityDef nails = Helper.CreateDefFromClone(
+                source,
+                "bb65ab9c-94ae-4878-b999-e04946f720aa",
+                skillName);
+            nails.CharacterProgressionData = Helper.CreateDefFromClone(
+                source.CharacterProgressionData,
+                "c050760d-1fb7-4b25-9295-00d98aedad19",
+                skillName);
+            nails.ViewElementDef = Helper.CreateDefFromClone(
+                source.ViewElementDef,
+                "e9bd7acb-6955-414b-a2de-7544c38b7b6e",
+                skillName);
+            
             nails.ViewElementDef.DisplayName1 = new LocalizedTextBind("NAILS", true);
             nails.ViewElementDef.Description = new LocalizedTextBind("<b>You gain Slashing Strike, but -20% accuracyh</b>\n<i>Demonstrating signs of schizophrenia, this subject refuse to clip his nails and sharpens them to form monster " +
                 "claws, which naturally obstructs proper handling of firearm weapons </i>", true);
             Sprite icon = Repo.GetAllDefs<TacticalAbilityViewElementDef>().FirstOrDefault(tav => tav.name.Equals("E_ViewElement [Mutoid_SlashingStrike_AbilityDef]")).SmallIcon;
             nails.ViewElementDef.LargeIcon = icon;
             nails.ViewElementDef.SmallIcon = icon;
-        }
+        }       
         public static void Create_OneOfUs()
         {
             string skillName = "OneOfUs_AbilityDef";
@@ -388,23 +414,23 @@ namespace DeleriumPerks
             ofuPassive.ViewElementDef.LargeIcon = icon;
             ofuPassive.ViewElementDef.SmallIcon = icon;
         }
-        public static void Create_Immortality()
+        public static void Create_ImmortalityPassive()
         {
-            string skillName = "Immortality_AbilityDef";
+            string skillName = "ImmortalityPassive_AbilityDef";
             PassiveModifierAbilityDef source = Repo.GetAllDefs<PassiveModifierAbilityDef>().FirstOrDefault(p => p.name.Equals("Thief_AbilityDef"));
-            PassiveModifierAbilityDef immortality = Helper.CreateDefFromClone(
+            PassiveModifierAbilityDef immortalityPassive = Helper.CreateDefFromClone(
                 source,
                 "51ddff8e-49d0-4cca-8f4f-53aa39fcbce9",
                 skillName);
-            immortality.CharacterProgressionData = Helper.CreateDefFromClone(
+            immortalityPassive.CharacterProgressionData = Helper.CreateDefFromClone(
                 source.CharacterProgressionData,
                 "3efc6f6b-8c57-405b-afe4-f20491336bd5",
                 skillName);
-            immortality.ViewElementDef = Helper.CreateDefFromClone(
+            immortalityPassive.ViewElementDef = Helper.CreateDefFromClone(
                 source.ViewElementDef,
                 "604181c6-fd18-46be-a3af-0b756a8200f1",
                 skillName);
-            immortality.StatModifications = new ItemStatModification[]
+            immortalityPassive.StatModifications = new ItemStatModification[]
               {
                 new ItemStatModification()
                 {
@@ -419,7 +445,31 @@ namespace DeleriumPerks
                     Value = -5,
                 },
               };
-            immortality.ItemTagStatModifications = new EquipmentItemTagStatModification[0];
+            immortalityPassive.ItemTagStatModifications = new EquipmentItemTagStatModification[0];
+            immortalityPassive.ViewElementDef.DisplayName1 = new LocalizedTextBind("IMMORTALITY", true);
+            immortalityPassive.ViewElementDef.Description = new LocalizedTextBind("<b>Strength reduced -4, Gain 10 natural Armour</b>\n<i>Self-mutilation is not uncommon to develop throughout Delirium affected subjects," +
+                " this one in particular believes he has become Immortal</i>", true);
+            Sprite icon = Helper.CreateSpriteFromImageFile("UI_AbilitiesIcon_PersonalTrack_Vampire.png");
+            immortalityPassive.ViewElementDef.LargeIcon = icon;
+            immortalityPassive.ViewElementDef.SmallIcon = icon;
+        }
+        public static void Create_Immortality()
+        {
+            string skillName = "Immortality_AbilityDef";
+            ApplyStatusAbilityDef source = Repo.GetAllDefs<ApplyStatusAbilityDef>().FirstOrDefault(p => p.name.Equals("IgnorePain_AbilityDef"));
+            ApplyStatusAbilityDef immortality = Helper.CreateDefFromClone(
+                source,
+                "eea26659-d54f-48d8-8025-cb7ca53c1749",
+                skillName);
+            immortality.CharacterProgressionData = Helper.CreateDefFromClone(
+                source.CharacterProgressionData,
+                "d99c2d2f-0cff-412c-ad99-218b39158c88",
+                skillName);
+            immortality.ViewElementDef = Helper.CreateDefFromClone(
+                source.ViewElementDef,
+                "3f8b13e1-70ff-4964-923d-1e2c73f66f4f",
+                skillName);
+
             immortality.ViewElementDef.DisplayName1 = new LocalizedTextBind("IMMORTALITY", true);
             immortality.ViewElementDef.Description = new LocalizedTextBind("<b>Strength reduced -4, Gain 10 natural Armour</b>\n<i>Self-mutilation is not uncommon to develop throughout Delirium affected subjects," +
                 " this one in particular believes he has become Immortal</i>", true);
@@ -445,12 +495,12 @@ namespace DeleriumPerks
                 skillName);
             OnActorDeathEffectStatusDef feralStatusDef = Helper.CreateDefFromClone(
                 Repo.GetAllDefs<OnActorDeathEffectStatusDef>().FirstOrDefault(a => a.name.Equals("E_RapidClearanceStatus [RapidClearance_AbilityDef]")),
-                "b8c58fc2-c56e-4577-a187-c0922cba8468",
-                "E_ImmortalityStatus [Immortality_AbilityDef]");
+                "9510c7e3-bef7-4b89-b20a-3bb57a7e664b",
+                "E_FeralStatus [Feral_AbilityDef]");
             ProcessDeathReportEffectDef feralEffectDef = Helper.CreateDefFromClone(
                 Repo.GetAllDefs<ProcessDeathReportEffectDef>().FirstOrDefault(a => a.name.Equals("E_Effect [RapidClearance_AbilityDef]")),
-                "92560850-084c-4d43-8c57-a4f5773e4a26",
-                "E_Effect [Immortality_AbilityDef]");
+                "d0f71701-4255-4b57-a387-0f3c936ed29e",
+                "E_Effect [Feral_AbilityDef]");
 
             feral.StatusApplicationTrigger = StatusApplicationTrigger.ActorEnterPlay;
             feral.Active = false;
@@ -536,17 +586,15 @@ namespace DeleriumPerks
                                     }
 
                                     TacticalAbilityDef abilityDef5 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("Nails_AbilityDef"));
-                                    ApplyStatusAbilityDef MutoidSlasherArm = Repo.GetAllDefs<ApplyStatusAbilityDef>().FirstOrDefault(sd => sd.name.Equals("Mutoid_Adapt_RightArm_Slasher_AbilityDef"));
-                                    MutoidSlasherArm.StatusApplicationTrigger = StatusApplicationTrigger.ActorEnterPlay;
                                     if (actor.GetAbilityWithDef<Ability>(abilityDef5) != null)
                                     {
-                                        actor.AddAbility(MutoidSlasherArm, actor);
+                                        actor.AddAbility(Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("NailsPassive_AbilityDef")), actor);
                                     }
 
                             TacticalAbilityDef abilityDef7 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("Immortality_AbilityDef"));
                             if (actor.GetAbilityWithDef<Ability>(abilityDef7) != null)
                             {
-                                actor.AddAbility(Repo.GetAllDefs<AbilityDef>().FirstOrDefault(sd => sd.name.Equals("IgnorePain_AbilityDef")), actor);
+                                actor.AddAbility(Repo.GetAllDefs<AbilityDef>().FirstOrDefault(sd => sd.name.Equals("ImmortalityPassive_AbilityDef")), actor);
                             }
                             /*
                             TacticalAbilityDef abilityDef6 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("Feral_AbilityDef"));
@@ -584,9 +632,9 @@ namespace DeleriumPerks
             try         
             {
                 TacticalAbilityDef abilityDef9 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("Feral_AbilityDef"));
-                if (__instance.TacticalActor.GetAbilityWithDef<TacticalAbility>(abilityDef9) != null & __instance.Source is Equipment)
+                if (__instance.TacticalActor.GetAbilityWithDef<TacticalAbility>(abilityDef9) != null && __instance.Source is Equipment)
                 {
-                    __result = UnityEngine.Random.Range(0, 100) < 10;
+                    __result = UnityEngine.Random.Range(0, 100) >= 0;
                 }
             }         
             catch (Exception e)         

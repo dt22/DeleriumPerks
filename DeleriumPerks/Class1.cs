@@ -92,7 +92,6 @@ namespace DeleriumPerks
             Create_Nails();
             Create_NailsPassive();
             Create_Immortality();
-            Create_ImmortalityPassive();
             Create_Feral();
             Create_Solipsism();
         }
@@ -414,23 +413,23 @@ namespace DeleriumPerks
             ofuPassive.ViewElementDef.LargeIcon = icon;
             ofuPassive.ViewElementDef.SmallIcon = icon;
         }
-        public static void Create_ImmortalityPassive()
+        public static void Create_Immortality()
         {
-            string skillName = "ImmortalityPassive_AbilityDef";
+            string skillName = "Immortality_AbilityDef";
             PassiveModifierAbilityDef source = Repo.GetAllDefs<PassiveModifierAbilityDef>().FirstOrDefault(p => p.name.Equals("Thief_AbilityDef"));
-            PassiveModifierAbilityDef immortalityPassive = Helper.CreateDefFromClone(
+            PassiveModifierAbilityDef immortality = Helper.CreateDefFromClone(
                 source,
                 "51ddff8e-49d0-4cca-8f4f-53aa39fcbce9",
                 skillName);
-            immortalityPassive.CharacterProgressionData = Helper.CreateDefFromClone(
+            immortality.CharacterProgressionData = Helper.CreateDefFromClone(
                 source.CharacterProgressionData,
                 "3efc6f6b-8c57-405b-afe4-f20491336bd5",
                 skillName);
-            immortalityPassive.ViewElementDef = Helper.CreateDefFromClone(
+            immortality.ViewElementDef = Helper.CreateDefFromClone(
                 source.ViewElementDef,
                 "604181c6-fd18-46be-a3af-0b756a8200f1",
                 skillName);
-            immortalityPassive.StatModifications = new ItemStatModification[]
+            immortality.StatModifications = new ItemStatModification[]
               {
                 new ItemStatModification()
                 {
@@ -445,17 +444,18 @@ namespace DeleriumPerks
                     Value = -5,
                 },
               };
-            immortalityPassive.ItemTagStatModifications = new EquipmentItemTagStatModification[0];
-            immortalityPassive.ViewElementDef.DisplayName1 = new LocalizedTextBind("IMMORTALITY", true);
-            immortalityPassive.ViewElementDef.Description = new LocalizedTextBind("<b>Strength reduced -4, Gain 10 natural Armour</b>\n<i>Self-mutilation is not uncommon to develop throughout Delirium affected subjects," +
+            immortality.ItemTagStatModifications = new EquipmentItemTagStatModification[0];
+            immortality.ViewElementDef.DisplayName1 = new LocalizedTextBind("IMMORTALITY", true);
+            immortality.ViewElementDef.Description = new LocalizedTextBind("<b>Strength reduced -5, Disabled limbs remain functional</b>\n<i>Self-mutilation is not uncommon to develop throughout Delirium affected subjects," +
                 " this one in particular believes he has become Immortal</i>", true);
             Sprite icon = Helper.CreateSpriteFromImageFile("UI_AbilitiesIcon_PersonalTrack_Vampire.png");
-            immortalityPassive.ViewElementDef.LargeIcon = icon;
-            immortalityPassive.ViewElementDef.SmallIcon = icon;
+            immortality.ViewElementDef.LargeIcon = icon;
+            immortality.ViewElementDef.SmallIcon = icon;
         }
-        public static void Create_Immortality()
+        /*
+        public static void Create_Immortality2()
         {
-            string skillName = "Immortality_AbilityDef";
+            string skillName = "Immortality2_AbilityDef";
             ApplyStatusAbilityDef source = Repo.GetAllDefs<ApplyStatusAbilityDef>().FirstOrDefault(p => p.name.Equals("IgnorePain_AbilityDef"));
             ApplyStatusAbilityDef immortality = Helper.CreateDefFromClone(
                 source,
@@ -477,6 +477,7 @@ namespace DeleriumPerks
             immortality.ViewElementDef.LargeIcon = icon;
             immortality.ViewElementDef.SmallIcon = icon;
         }
+        */
         public static void Create_Feral()
         {
             string skillName = "Feral_AbilityDef";
@@ -579,10 +580,10 @@ namespace DeleriumPerks
                                         actor.AddAbility(Repo.GetAllDefs<AbilityDef>().FirstOrDefault(sd => sd.name.Equals("Mutog_Devour_AbilityDef")), actor);
                                     }
 
-                                    TacticalAbilityDef abilityDef3 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("OneOfUs_AbilityDef"));
+                                    TacticalAbilityDef abilityDef3 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("OneOfUsPassive_AbilityDef"));
                                     if (actor.GetAbilityWithDef<Ability>(abilityDef3) != null)
                                     {
-                                        actor.AddAbility(Repo.GetAllDefs<AbilityDef>().FirstOrDefault(sd => sd.name.Equals("OneOfUsPassive_AbilityDef")), actor);
+                                        actor.AddAbility(Repo.GetAllDefs<AbilityDef>().FirstOrDefault(sd => sd.name.Equals("OneOfUs_AbilityDef")), actor);
                                     }
 
                                     TacticalAbilityDef abilityDef5 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("Nails_AbilityDef"));
@@ -594,7 +595,7 @@ namespace DeleriumPerks
                             TacticalAbilityDef abilityDef7 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("Immortality_AbilityDef"));
                             if (actor.GetAbilityWithDef<Ability>(abilityDef7) != null)
                             {
-                                actor.AddAbility(Repo.GetAllDefs<AbilityDef>().FirstOrDefault(sd => sd.name.Equals("ImmortalityPassive_AbilityDef")), actor);
+                                actor.AddAbility(Repo.GetAllDefs<AbilityDef>().FirstOrDefault(sd => sd.name.Equals("IgnorePain_AbilityDef")), actor);
                             }
                             /*
                             TacticalAbilityDef abilityDef6 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("Feral_AbilityDef"));
@@ -634,7 +635,7 @@ namespace DeleriumPerks
                 TacticalAbilityDef abilityDef9 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("Feral_AbilityDef"));
                 if (__instance.TacticalActor.GetAbilityWithDef<TacticalAbility>(abilityDef9) != null && __instance.Source is Equipment)
                 {
-                    __result = UnityEngine.Random.Range(0, 100) >= 0;
+                    __result = UnityEngine.Random.Range(0, 100) < 10;
                 }
             }         
             catch (Exception e)         

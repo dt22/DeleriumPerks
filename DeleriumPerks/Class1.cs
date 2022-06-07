@@ -160,6 +160,17 @@ namespace DeleriumPerks
             hallucinating.ViewElementDef.LargeIcon = icon;
             hallucinating.ViewElementDef.SmallIcon = icon;
         }
+        public static void Create_HallucinatingStatus()
+        {
+            string skillName = "Hallucinating_StatusDef";
+            SilencedStatusDef source = Repo.GetAllDefs<SilencedStatusDef>().FirstOrDefault(p => p.name.Equals("ActorSilenced_StatusDef"));
+            SilencedStatusDef hallucinatingStatus = Helper.CreateDefFromClone(
+                source,
+                "2d5ed7eb-f4f3-42bf-8589-1d50ec99fa8b",
+                skillName);
+
+            hallucinatingStatus.DurationTurns = 2;
+        }
         public static void Create_FleshEater()
         {
             string skillName = "FleshEater_AbilityDef";
@@ -404,7 +415,9 @@ namespace DeleriumPerks
                     Value = -2
                 },              
               };
-
+            
+            DamageMultiplierStatusDef mistResistance = Repo.GetAllDefs<DamageMultiplierStatusDef>().FirstOrDefault(a => a.name.Contains("MistResistance_StatusDef"));
+            mistResistance.Multiplier = 0.0f;
             ofuPassive.ItemTagStatModifications = new EquipmentItemTagStatModification[0];
             ofuPassive.ViewElementDef.DisplayName1 = new LocalizedTextBind("ONE OF US", true);
             ofuPassive.ViewElementDef.Description = new LocalizedTextBind("<b>Willpower reduced -2, Mist affects you as if you were a Pandoran</b>\n<i>Often the last to leave the mission, wandering ruined landscapes the subject claims the mist " +
@@ -571,7 +584,7 @@ namespace DeleriumPerks
                                     TacticalAbilityDef abilityDef1 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("Hallucinating_AbilityDef"));
                                     if (actor.GetAbilityWithDef<Ability>(abilityDef1) != null)
                                     {                               
-                                        actor.Status.ApplyStatus(Repo.GetAllDefs<StatusDef>().FirstOrDefault(sd => sd.name.Equals("ActorSilenced_StatusDef")));
+                                        actor.Status.ApplyStatus(Repo.GetAllDefs<StatusDef>().FirstOrDefault(sd => sd.name.Equals("Hallucinating_StatusDef")));
                                     }
                                     
                                     TacticalAbilityDef abilityDef2 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("FleshEater_AbilityDef"));
@@ -583,7 +596,8 @@ namespace DeleriumPerks
                                     TacticalAbilityDef abilityDef3 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("OneOfUsPassive_AbilityDef"));
                                     if (actor.GetAbilityWithDef<Ability>(abilityDef3) != null)
                                     {
-                                        actor.AddAbility(Repo.GetAllDefs<AbilityDef>().FirstOrDefault(sd => sd.name.Equals("OneOfUs_AbilityDef")), actor);
+                                         
+                                         actor.Status.ApplyStatus(Repo.GetAllDefs<StatusDef>().FirstOrDefault(sd => sd.name.Equals("MistResistance_StatusDef")));                                    
                                     }
 
                                     TacticalAbilityDef abilityDef5 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("Nails_AbilityDef"));

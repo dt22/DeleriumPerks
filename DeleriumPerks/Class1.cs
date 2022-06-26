@@ -94,6 +94,7 @@ namespace DeleriumPerks
             Create_Immortality();
             Create_Feral();
             Create_Solipsism();
+            Clone_ArmorBuffStatus();
         }
 
         public static void Create_ShutEye()
@@ -448,18 +449,18 @@ namespace DeleriumPerks
                 {
                     TargetStat = StatModificationTarget.Endurance,
                     Modification = StatModificationType.Add,
-                    Value = -5,
+                    Value = -4,
                 },
                 new ItemStatModification()
                 {
                     TargetStat = StatModificationTarget.Endurance,
                     Modification = StatModificationType.AddMax,
-                    Value = -5,
+                    Value = -4,
                 },
               };
             immortality.ItemTagStatModifications = new EquipmentItemTagStatModification[0];
             immortality.ViewElementDef.DisplayName1 = new LocalizedTextBind("IMMORTALITY", true);
-            immortality.ViewElementDef.Description = new LocalizedTextBind("<b>Strength reduced -5, Disabled limbs remain functional</b>\n<i>Self-mutilation is not uncommon to develop throughout Delirium affected subjects," +
+            immortality.ViewElementDef.Description = new LocalizedTextBind("<b>Strength reduced -4, +10 armor</b>\n<i>Self-mutilation is not uncommon to develop throughout Delirium affected subjects," +
                 " this one in particular believes he has become Immortal</i>", true);
             Sprite icon = Helper.CreateSpriteFromImageFile("UI_AbilitiesIcon_PersonalTrack_Vampire.png");
             immortality.ViewElementDef.LargeIcon = icon;
@@ -495,6 +496,7 @@ namespace DeleriumPerks
         {
             string skillName = "Feral_AbilityDef";
             ApplyStatusAbilityDef source = Repo.GetAllDefs<ApplyStatusAbilityDef>().FirstOrDefault(p => p.name.Equals("RapidClearance_AbilityDef"));
+            ProcessDeathReportEffectDef sourceEffect = Repo.GetAllDefs<ProcessDeathReportEffectDef>().FirstOrDefault(p => p.name.Equals("E_Effect [RapidClearance_AbilityDef]"));
             ApplyStatusAbilityDef feral = Helper.CreateDefFromClone(
                 source,
                 "34612505-8512-4eb3-8429-ef087c07c764",
@@ -508,20 +510,20 @@ namespace DeleriumPerks
                 "1135128c-a10d-4285-9d03-d93a4afd6733",
                 skillName);
             OnActorDeathEffectStatusDef feralStatusDef = Helper.CreateDefFromClone(
-                Repo.GetAllDefs<OnActorDeathEffectStatusDef>().FirstOrDefault(a => a.name.Equals("E_RapidClearanceStatus [RapidClearance_AbilityDef]")),
+                source.StatusDef as OnActorDeathEffectStatusDef,
                 "9510c7e3-bef7-4b89-b20a-3bb57a7e664b",
                 "E_FeralStatus [Feral_AbilityDef]");
             ProcessDeathReportEffectDef feralEffectDef = Helper.CreateDefFromClone(
-                Repo.GetAllDefs<ProcessDeathReportEffectDef>().FirstOrDefault(a => a.name.Equals("E_Effect [RapidClearance_AbilityDef]")),
+                sourceEffect,
                 "d0f71701-4255-4b57-a387-0f3c936ed29e",
                 "E_Effect [Feral_AbilityDef]");
 
-            feral.StatusApplicationTrigger = StatusApplicationTrigger.ActorEnterPlay;
+            feral.StatusApplicationTrigger = StatusApplicationTrigger.AbilityAdded;
             feral.Active = false;
             feral.WillPointCost = 0;
-
             feral.StatusDef = feralStatusDef;
             feralStatusDef.EffectDef = feralEffectDef;
+            feralStatusDef.ExpireOnEndOfTurn = false;
             feralEffectDef.RestoreActionPointsFraction = 0.25f;
 
             feral.ViewElementDef.DisplayName1 = new LocalizedTextBind("FERAL", true);
@@ -557,6 +559,32 @@ namespace DeleriumPerks
             Sprite icon = Helper.CreateSpriteFromImageFile("UI_AbilitiesIcon_PersonalTrack_Privileged_1-2.png");
             solipsism.ViewElementDef.LargeIcon = icon;
             solipsism.ViewElementDef.SmallIcon = icon;
+        }
+        public static void Clone_ArmorBuffStatus()
+        {
+            string skillName = "ArmorBuffStatus_StatusDef";
+            ItemSlotStatsModifyStatusDef source = Repo.GetAllDefs<ItemSlotStatsModifyStatusDef>().FirstOrDefault(p => p.name.Equals("E_Status [Acheron_RestorePandoranArmor_AbilityDef]"));
+            ItemSlotStatsModifyStatusDef armorBuffStatus = Helper.CreateDefFromClone(
+                source,
+                "D2B46847-FC47-436D-A940-19CDEF472ED1",
+                skillName);
+
+            armorBuffStatus.StatsModifications = new ItemSlotStatsModifyStatusDef.ItemSlotModification[]
+            {
+                new ItemSlotStatsModifyStatusDef.ItemSlotModification()
+                {
+                    Type = ItemSlotStatsModifyStatusDef.StatType.Armour,
+                    ModificationType = StatModificationType.Add,
+                    Value = 10,
+                },
+                new ItemSlotStatsModifyStatusDef.ItemSlotModification()
+                {
+                    Type = ItemSlotStatsModifyStatusDef.StatType.Armour,
+                    ModificationType = StatModificationType.AddMax,
+                    Value = 10,
+                },
+            };
+
         }
     }
 
@@ -606,11 +634,11 @@ namespace DeleriumPerks
                                         actor.AddAbility(Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("NailsPassive_AbilityDef")), actor);
                                     }
 
-                            TacticalAbilityDef abilityDef7 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("Immortality_AbilityDef"));
-                            if (actor.GetAbilityWithDef<Ability>(abilityDef7) != null)
-                            {
-                                actor.AddAbility(Repo.GetAllDefs<AbilityDef>().FirstOrDefault(sd => sd.name.Equals("IgnorePain_AbilityDef")), actor);
-                            }
+                                    TacticalAbilityDef abilityDef7 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("Immortality_AbilityDef"));
+                                    if (actor.GetAbilityWithDef<Ability>(abilityDef7) != null)
+                                    {
+                                        actor.Status.ApplyStatus(Repo.GetAllDefs<StatusDef>().FirstOrDefault(sd => sd.name.Equals("ArmorBuffStatus_StatusDef")));
+                                    }
                             /*
                             TacticalAbilityDef abilityDef6 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("Feral_AbilityDef"));
                                     if (actor.GetAbilityWithDef<Ability>(abilityDef6) != null)

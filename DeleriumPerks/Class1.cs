@@ -82,7 +82,8 @@ namespace DeleriumPerks
 
 
             // Initialize Helper
-
+            Clone_GameTag();
+            AddAnimation();
             Create_ShutEye();
             Create_Photophobia();
             Create_AngerIssues();
@@ -90,19 +91,23 @@ namespace DeleriumPerks
             Create_OneOfUs();
             Create_OneOfUsPassive();
             Create_FleshEater();
+            Clone_Inspire();
             Create_Nails();
             Create_NailsPassive();
             Create_Immortality();
             Create_Feral();
             Create_Solipsism();
             Clone_ArmorBuffStatus();
-            Clone_GameTag();
-            AddAnimation();
         }
         public static void AddAnimation()
         {
             ApplyStatusAbilityDef devour = Repo.GetAllDefs<ApplyStatusAbilityDef>().FirstOrDefault(p => p.name.Equals("Mutog_Devour_AbilityDef"));
             PlayActionAnimationAbilityDef devourAnim = Repo.GetAllDefs<PlayActionAnimationAbilityDef>().FirstOrDefault(p => p.name.Equals("Mutog_PlayDevourAnimation_AbilityDef"));
+
+            //OnActorDeathEffectStatusDef devourStatus = (OnActorDeathEffectStatusDef)devour.StatusDef;
+            //devourStatus.Range = 99;
+            //devourStatus.RequiredDyingActorTags = null;
+
 
             foreach (TacActorSimpleAbilityAnimActionDef animActionDef in Repo.GetAllDefs<TacActorSimpleAbilityAnimActionDef>().Where(aad => aad.name.Contains("Soldier_Utka_AnimActionsDef")))
             {
@@ -124,10 +129,16 @@ namespace DeleriumPerks
         {
             string skillName = "Takashi_GameTagDef";
             GameTagDef source = Repo.GetAllDefs<GameTagDef>().FirstOrDefault(p => p.name.Equals("Takeshi_Tutorial3_GameTagDef"));
-            GameTagDef shutEye = Helper.CreateDefFromClone(
+            GameTagDef Takashi = Helper.CreateDefFromClone(
                 source,
                 "F9FF0EF9-4800-4355-B6F4-5543994C129F",
                 skillName);
+
+            TacticalVoxelMatrixDataDef tVMDD = Repo.GetAllDefs<TacticalVoxelMatrixDataDef>().FirstOrDefault(dtb => dtb.name.Equals("TacticalVoxelMatrixDataDef"));
+            tVMDD.MistImmunityTags = new GameTagsList()
+            {
+                Takashi,
+            };
         }
         public static void Create_ShutEye()
         {
@@ -255,11 +266,62 @@ namespace DeleriumPerks
             };
             
             fleshEater.ViewElementDef.DisplayName1 = new LocalizedTextBind("FLESH EATER", true);
-            fleshEater.ViewElementDef.Description = new LocalizedTextBind("<b>You gain Devour ability. Your allies lose 2 WP each time you kill an enemy.</b>\n<i>It is unclear whether this is some part of pagan ritual or pure insanity, but so far individual " +
+            fleshEater.ViewElementDef.Description = new LocalizedTextBind("<b>Recover 80 HP when you kill an enemy. Your allies lose 2 WP each time you kill an enemy.</b>\n<i>It is unclear whether this is some part of pagan ritual or pure insanity, but so far individual " +
                 "combat efficiency of the unit has grown by 46%</i>", true);
             Sprite icon = Repo.GetAllDefs<TacticalAbilityViewElementDef>().FirstOrDefault(tav => tav.name.Equals("E_ViewElement [Mutog_Devour_AbilityDef]")).LargeIcon;
             fleshEater.ViewElementDef.LargeIcon = icon;
             fleshEater.ViewElementDef.SmallIcon = icon;
+        }
+        public static void Clone_Inspire()
+        {
+            string skillName = "FleshEaterHP_AbilityDef";
+            ApplyStatusAbilityDef source = Repo.GetAllDefs<ApplyStatusAbilityDef>().FirstOrDefault(p => p.name.Equals("Inspire_AbilityDef"));
+            ApplyStatusAbilityDef fleshEater = Helper.CreateDefFromClone(
+                source,
+                "FF52ACBE-FFB2-4A96-8DC2-0B8072036669",
+                skillName);
+            fleshEater.CharacterProgressionData = Helper.CreateDefFromClone(
+                source.CharacterProgressionData,
+                "B5D6B88F-5F0A-4B3B-9F53-3E14276F4533",
+                skillName);
+            fleshEater.ViewElementDef = Helper.CreateDefFromClone(
+                source.ViewElementDef,
+                "0078B9D3-8DFF-40C6-A009-8B572EFCF87A",
+                skillName);
+
+            OnActorDeathEffectStatusDef fleshEaterStatus = Helper.CreateDefFromClone(
+                fleshEater.StatusDef as OnActorDeathEffectStatusDef,
+                "42600C75-8E8A-4AC9-B192-49960957CAAA",
+                "E_KillListenerStatus [" + skillName + "]");
+
+            FactionMembersEffectDef fleshEaterEffectDef2 = Helper.CreateDefFromClone(
+                fleshEaterStatus.EffectDef as FactionMembersEffectDef,
+                "452133A6-BB2E-4DE7-B561-073CCBE48D49",
+                "E_Effect [" + skillName + "]");
+
+            StatsModifyEffectDef fleshEaterSingleEffectDef2 = Helper.CreateDefFromClone(
+                fleshEaterEffectDef2.SingleTargetEffect as StatsModifyEffectDef,
+                "9F39B97B-9DB7-4076-96AE-4AAD317E1A6D",
+                "E_SingleTargetEffect [" + skillName + "]");
+
+            fleshEater.ApplyStatusToAllTargets = false;
+            //(fleshEater.StatusDef as OnActorDeathEffectStatusDef).EffectDef = fleshEaterEffectDef;
+            //fleshEaterEffectDef.SingleTargetEffect = fleshEaterSingleTargetEffectDef;
+            //fleshEaterSingleTargetEffectDef.StatModifications[0].StatName = "";
+            fleshEater.StatusDef = fleshEaterStatus;
+            fleshEaterStatus.EffectDef = fleshEaterEffectDef2;
+            fleshEaterEffectDef2.SingleTargetEffect = fleshEaterSingleEffectDef2;
+            fleshEaterEffectDef2.IgnoreTargetActor = false;
+
+            fleshEaterSingleEffectDef2.StatModifications = new List<StatModification>
+            {
+                new StatModification()
+                {
+                    Modification = StatModificationType.AddRestrictedToBounds,
+                    StatName = "Health",
+                    Value = 80,
+                }
+            };
         }
         public static void Create_AngerIssues()
         {
@@ -404,12 +466,6 @@ namespace DeleriumPerks
                 source.ViewElementDef,
                 "3cc4d8c8-739c-403b-92c9-7a6f5c54abb5",
                 skillName);
-
-            TacticalVoxelMatrixDataDef tVMDD = Repo.GetAllDefs<TacticalVoxelMatrixDataDef>().FirstOrDefault(dtb => dtb.name.Equals("TacticalVoxelMatrixDataDef"));
-            tVMDD.MistImmunityTags = new GameTagsList 
-            {
-                Repo.GetAllDefs<GameTagDef>().FirstOrDefault(dtb => dtb.name.Equals("Takashi_GameTagDef"))
-            };
 
             oneOfUs.DamageTypeDef = Repo.GetAllDefs<DamageTypeBaseEffectDef>().FirstOrDefault(dtb => dtb.name.Equals("Mist_SpawnVoxelDamageTypeEffectDef"));
             oneOfUs.Multiplier = 0;
@@ -656,14 +712,14 @@ namespace DeleriumPerks
                             TacticalAbilityDef abilityDef2 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("FleshEater_AbilityDef"));
                             if (actor.GetAbilityWithDef<Ability>(abilityDef2) != null)
                             {
-                                actor.AddAbility(Repo.GetAllDefs<AbilityDef>().FirstOrDefault(sd => sd.name.Equals("Mutog_Devour_AbilityDef")), actor);
+                                actor.AddAbility(Repo.GetAllDefs<AbilityDef>().FirstOrDefault(sd => sd.name.Equals("FleshEaterHP_AbilityDef")), actor);
                             }
 
                             TacticalAbilityDef abilityDef3 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("OneOfUsPassive_AbilityDef"));
                             if (actor.GetAbilityWithDef<Ability>(abilityDef3) != null)
                             {
                                 actor.Status.ApplyStatus(Repo.GetAllDefs<StatusDef>().FirstOrDefault(sd => sd.name.Equals("MistResistance_StatusDef")));
-                                actor.GameTags.Add(Repo.GetAllDefs<GameTagDef>().FirstOrDefault(sd => sd.name.Equals("Takashi_GameTagDef")));
+                                actor.GameTags.Add(Repo.GetAllDefs<GameTagDef>().FirstOrDefault(sd => sd.name.Equals("Takashi_GameTagDef")), GameTagAddMode.ReplaceExistingExclusive);
                             }
 
                             TacticalAbilityDef abilityDef5 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("Nails_AbilityDef"));

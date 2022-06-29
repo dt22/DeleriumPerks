@@ -96,8 +96,39 @@ namespace DeleriumPerks
             Create_Feral();
             Create_Solipsism();
             Clone_ArmorBuffStatus();
+            Clone_GameTag();
+            AddAnimation();
         }
+        public static void AddAnimation()
+        {
+            ApplyStatusAbilityDef devour = Repo.GetAllDefs<ApplyStatusAbilityDef>().FirstOrDefault(p => p.name.Equals("Mutog_Devour_AbilityDef"));
+            PlayActionAnimationAbilityDef devourAnim = Repo.GetAllDefs<PlayActionAnimationAbilityDef>().FirstOrDefault(p => p.name.Equals("Mutog_PlayDevourAnimation_AbilityDef"));
 
+            foreach (TacActorSimpleAbilityAnimActionDef animActionDef in Repo.GetAllDefs<TacActorSimpleAbilityAnimActionDef>().Where(aad => aad.name.Contains("Soldier_Utka_AnimActionsDef")))
+            {
+                if (animActionDef.AbilityDefs != null && !animActionDef.AbilityDefs.Contains(devour))
+                {
+                    animActionDef.AbilityDefs = animActionDef.AbilityDefs.Append(devour).ToArray();
+                }
+            }
+
+            foreach (TacActorSimpleAbilityAnimActionDef animActionDef in Repo.GetAllDefs<TacActorSimpleAbilityAnimActionDef>().Where(aad => aad.name.Contains("Soldier_Utka_AnimActionsDef")))
+            {
+                if (animActionDef.AbilityDefs != null && !animActionDef.AbilityDefs.Contains(devourAnim))
+                {
+                    animActionDef.AbilityDefs = animActionDef.AbilityDefs.Append(devourAnim).ToArray();
+                }
+            }
+        }
+        public static void Clone_GameTag()
+        {
+            string skillName = "Takashi_GameTagDef";
+            GameTagDef source = Repo.GetAllDefs<GameTagDef>().FirstOrDefault(p => p.name.Equals("Takeshi_Tutorial3_GameTagDef"));
+            GameTagDef shutEye = Helper.CreateDefFromClone(
+                source,
+                "F9FF0EF9-4800-4355-B6F4-5543994C129F",
+                skillName);
+        }
         public static void Create_ShutEye()
         {
             string skillName = "ShutEye_AbilityDef";
@@ -377,7 +408,7 @@ namespace DeleriumPerks
             TacticalVoxelMatrixDataDef tVMDD = Repo.GetAllDefs<TacticalVoxelMatrixDataDef>().FirstOrDefault(dtb => dtb.name.Equals("TacticalVoxelMatrixDataDef"));
             tVMDD.MistImmunityTags = new GameTagsList 
             {
-                Repo.GetAllDefs<GameTagDef>().FirstOrDefault(dtb => dtb.name.Equals("SmallGeyser_GameTagDef"))
+                Repo.GetAllDefs<GameTagDef>().FirstOrDefault(dtb => dtb.name.Equals("Takashi_GameTagDef"))
             };
 
             oneOfUs.DamageTypeDef = Repo.GetAllDefs<DamageTypeBaseEffectDef>().FirstOrDefault(dtb => dtb.name.Equals("Mist_SpawnVoxelDamageTypeEffectDef"));
@@ -632,7 +663,7 @@ namespace DeleriumPerks
                             if (actor.GetAbilityWithDef<Ability>(abilityDef3) != null)
                             {
                                 actor.Status.ApplyStatus(Repo.GetAllDefs<StatusDef>().FirstOrDefault(sd => sd.name.Equals("MistResistance_StatusDef")));
-                                actor.GameTags.Add(Repo.GetAllDefs<GameTagDef>().FirstOrDefault(sd => sd.name.Equals("SmallGeyser_GameTagDef")));
+                                actor.GameTags.Add(Repo.GetAllDefs<GameTagDef>().FirstOrDefault(sd => sd.name.Equals("Takashi_GameTagDef")));
                             }
 
                             TacticalAbilityDef abilityDef5 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("Nails_AbilityDef"));

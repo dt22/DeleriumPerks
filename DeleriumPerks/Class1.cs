@@ -49,6 +49,7 @@ using PhoenixPoint.Tactical.Levels;
 using Base.Assets;
 using PhoenixPoint.Geoscape.View.ViewControllers.BaseRecruits;
 using PhoenixPoint.Geoscape.View.DataObjects;
+using PhoenixPoint.Tactical.Levels.Mist;
 
 namespace DeleriumPerks
 {
@@ -373,10 +374,15 @@ namespace DeleriumPerks
                 "3cc4d8c8-739c-403b-92c9-7a6f5c54abb5",
                 skillName);
 
+            TacticalVoxelMatrixDataDef tVMDD = Repo.GetAllDefs<TacticalVoxelMatrixDataDef>().FirstOrDefault(dtb => dtb.name.Equals("TacticalVoxelMatrixDataDef"));
+            tVMDD.MistImmunityTags = new GameTagsList 
+            {
+                Repo.GetAllDefs<GameTagDef>().FirstOrDefault(dtb => dtb.name.Equals("SmallGeyser_GameTagDef"))
+            };
 
             oneOfUs.DamageTypeDef = Repo.GetAllDefs<DamageTypeBaseEffectDef>().FirstOrDefault(dtb => dtb.name.Equals("Mist_SpawnVoxelDamageTypeEffectDef"));
             oneOfUs.Multiplier = 0;
-
+            
             oneOfUs.ViewElementDef.DisplayName1 = new LocalizedTextBind("ONE OF US", true);
             oneOfUs.ViewElementDef.Description = new LocalizedTextBind("<b>Willpower reduced -2, Mist affects you as if you were a Pandoran</b>\n<i>Often the last to leave the mission, wandering ruined landscapes the subject claims the mist " +
                 "calls out to him</i>", true);
@@ -524,8 +530,10 @@ namespace DeleriumPerks
             feral.StatusDef = feralStatusDef;
             feralStatusDef.EffectDef = feralEffectDef;
             feralStatusDef.ExpireOnEndOfTurn = false;
+            feralStatusDef.Duration = -1;
+            feralStatusDef.DurationTurns = -1;
             feralEffectDef.RestoreActionPointsFraction = 0.25f;
-
+           
             feral.ViewElementDef.DisplayName1 = new LocalizedTextBind("FERAL", true);
             feral.ViewElementDef.Description = new LocalizedTextBind("<b>Your attacks have 10% chance to fumble but you recover 1 AP when you kill an enemy</b>\n<i>Suffering personality disorder, the subject degrade to animalistic behaviour and state of mind</i>", true);
             Sprite icon = Repo.GetAllDefs<TacticalAbilityViewElementDef>().FirstOrDefault(tav => tav.name.Equals("E_ViewElement [Mutog_PrimalInstinct_AbilityDef]")).LargeIcon;
@@ -593,77 +601,60 @@ namespace DeleriumPerks
     {
         public static void Postfix(TacticalLevelController level)
         {
-            DefRepository Repo = GameUtl.GameComponent<DefRepository>();
-                    try
+            DefRepository Repo = GameUtl.GameComponent<DefRepository>();                    
+            try                  
+            {                       
+                foreach (TacticalFaction faction in level.Factions)                        
+                {                           
+                    if (faction.IsViewerFaction)                            
                     {
-                        foreach (TacticalFaction faction in level.Factions)
+                        foreach (TacticalActor actor in faction.TacticalActors)
                         {
-                            if (faction.IsViewerFaction)
+                            TacticalAbilityDef abilityDef = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("AngerIssues_AbilityDef"));
+                            if (actor.GetAbilityWithDef<Ability>(abilityDef) != null)
                             {
-                                foreach (TacticalActor actor in faction.TacticalActors)
-                                {
-                                    
-                                    TacticalAbilityDef abilityDef = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("AngerIssues_AbilityDef"));
-                                    if (actor.GetAbilityWithDef<Ability>(abilityDef) != null)
-                                    {                                      
-                                        actor.Status.ApplyStatus(Repo.GetAllDefs<StatusDef>().FirstOrDefault(sd => sd.name.Equals("Frenzy_StatusDef")));
-                                    }
+                                actor.Status.ApplyStatus(Repo.GetAllDefs<StatusDef>().FirstOrDefault(sd => sd.name.Equals("Frenzy_StatusDef")));
+                            }
 
-                                    TacticalAbilityDef abilityDef1 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("Hallucinating_AbilityDef"));
-                                    if (actor.GetAbilityWithDef<Ability>(abilityDef1) != null)
-                                    {                               
-                                        actor.Status.ApplyStatus(Repo.GetAllDefs<StatusDef>().FirstOrDefault(sd => sd.name.Equals("Hallucinating_StatusDef")));
-                                    }
-                                    
-                                    TacticalAbilityDef abilityDef2 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("FleshEater_AbilityDef"));
-                                    if (actor.GetAbilityWithDef<Ability>(abilityDef2) != null)
-                                    {
-                                        actor.AddAbility(Repo.GetAllDefs<AbilityDef>().FirstOrDefault(sd => sd.name.Equals("Mutog_Devour_AbilityDef")), actor);
-                                    }
+                            TacticalAbilityDef abilityDef1 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("Hallucinating_AbilityDef"));
+                            if (actor.GetAbilityWithDef<Ability>(abilityDef1) != null)
+                            {
+                                actor.Status.ApplyStatus(Repo.GetAllDefs<StatusDef>().FirstOrDefault(sd => sd.name.Equals("Hallucinating_StatusDef")));
+                            }
 
-                                    TacticalAbilityDef abilityDef3 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("OneOfUsPassive_AbilityDef"));
-                                    if (actor.GetAbilityWithDef<Ability>(abilityDef3) != null)
-                                    {
-                                         
-                                         actor.Status.ApplyStatus(Repo.GetAllDefs<StatusDef>().FirstOrDefault(sd => sd.name.Equals("MistResistance_StatusDef")));                                    
-                                    }
+                            TacticalAbilityDef abilityDef2 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("FleshEater_AbilityDef"));
+                            if (actor.GetAbilityWithDef<Ability>(abilityDef2) != null)
+                            {
+                                actor.AddAbility(Repo.GetAllDefs<AbilityDef>().FirstOrDefault(sd => sd.name.Equals("Mutog_Devour_AbilityDef")), actor);
+                            }
 
-                                    TacticalAbilityDef abilityDef5 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("Nails_AbilityDef"));
-                                    if (actor.GetAbilityWithDef<Ability>(abilityDef5) != null)
-                                    {
-                                        actor.AddAbility(Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("NailsPassive_AbilityDef")), actor);
-                                    }
+                            TacticalAbilityDef abilityDef3 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("OneOfUsPassive_AbilityDef"));
+                            if (actor.GetAbilityWithDef<Ability>(abilityDef3) != null)
+                            {
+                                actor.Status.ApplyStatus(Repo.GetAllDefs<StatusDef>().FirstOrDefault(sd => sd.name.Equals("MistResistance_StatusDef")));
+                                actor.GameTags.Add(Repo.GetAllDefs<GameTagDef>().FirstOrDefault(sd => sd.name.Equals("SmallGeyser_GameTagDef")));
+                            }
 
-                                    TacticalAbilityDef abilityDef7 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("Immortality_AbilityDef"));
-                                    if (actor.GetAbilityWithDef<Ability>(abilityDef7) != null)
-                                    {
-                                        actor.Status.ApplyStatus(Repo.GetAllDefs<StatusDef>().FirstOrDefault(sd => sd.name.Equals("ArmorBuffStatus_StatusDef")));
-                                    }
-                            /*
-                            TacticalAbilityDef abilityDef6 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("Feral_AbilityDef"));
-                                    if (actor.GetAbilityWithDef<Ability>(abilityDef6) != null)
-                                    {
-                                        actor.AddAbility(Repo.GetAllDefs<AbilityDef>().FirstOrDefault(sd => sd.name.Equals("Mutog_CanLeap_AbilityDef")), actor);
-                                        actor.AddAbility(Repo.GetAllDefs<AbilityDef>().FirstOrDefault(sd => sd.name.Equals("Mutog_Leap_AbilityDef")), actor);                          
-                                    }
-                                    
-                                    TacticalAbilityDef abilityDef8 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("Immortality_AbilityDef"));
-                                    if (actor.GetAbilityWithDef<Ability>(abilityDef8) != null)
-                                    {
-                                        actor.GetArmor().Add(50);
-                                        actor.CharacterStats.Armour.Add(100);
-                                        //actor.UpdateStats();
-                                    }
-                                    */
-                        }
-                    }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                    }
-                }           
-            }
+                            TacticalAbilityDef abilityDef5 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("Nails_AbilityDef"));
+                            if (actor.GetAbilityWithDef<Ability>(abilityDef5) != null)
+                            {
+                                actor.AddAbility(Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("NailsPassive_AbilityDef")), actor);
+                            }
+
+                            TacticalAbilityDef abilityDef7 = Repo.GetAllDefs<TacticalAbilityDef>().FirstOrDefault(tad => tad.name.Equals("Immortality_AbilityDef"));
+                            if (actor.GetAbilityWithDef<Ability>(abilityDef7) != null)
+                            {
+                                actor.Status.ApplyStatus(Repo.GetAllDefs<StatusDef>().FirstOrDefault(sd => sd.name.Equals("ArmorBuffStatus_StatusDef")));
+                            }
+                        }                            
+                    }                                                
+                }                                       
+            }                                       
+            catch (Exception e)                                        
+            {                                      
+            }                               
+        }                                   
+    }
 
     [HarmonyPatch(typeof(TacticalAbility), "FumbleActionCheck")]
     public static class TacticalAbility_FumbleActionCheck_Patch
